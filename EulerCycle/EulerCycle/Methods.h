@@ -10,12 +10,14 @@ using namespace std;
 class Methods
 {
 	private:
-		vector<int> FindEulerCycle(Node* CycleHead);
-		int GetPositiveIntegerFromUser();
-		Graph ReadGraphFromUser();
 		void AddCircuit(Node* cycleHead);
 		Node* FindCircuit(int i);
 		void AddNode();
 		void PrintCycle();
+	public:
+		static vector<int> FindEulerCycle();
+		static Graph ReadGraphFromUser();
+		static int GetPositiveIntegerFromUser();
+		static vector<Edge> GetEdgesFromUser();
 };
 
