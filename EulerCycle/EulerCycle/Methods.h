@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <stdexcept>
+#include <sstream>
 #include <string>
 #include "Node.h"
 #include "Graph.h"
