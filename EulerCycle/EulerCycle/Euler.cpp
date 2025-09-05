@@ -23,6 +23,52 @@ vector<int> Euler::FindEulerCycle() {
 	return vector<int>();
 }
 
+bool Euler::IsEulerian() {
+	return IsConnected() && AreAllVerticesEvenDegree();
+}
+
+bool Euler::AreAllVerticesEvenDegree() {
+	bool EvenDegree = true;
+
+	for (const Node& node : graph.GetNodesList()) {
+		if (node.GetDegree() % 2 != 0) {
+			EvenDegree = false;
+			break;
+		}
+	}
+
+	return EvenDegree;
+}
+
+bool Euler::IsConnected() {
+	bool IsConnected = true;
+	Visit(&graph.GetNodesList()[1]);
+
+	for (int i = 1; i < graph.GetNumVertices(); i++)
+	{
+		if (graph.GetNodesList()[i].GetColor() == Node::Color::White) {
+			IsConnected = false;
+			break;
+		}
+	}
+
+	return IsConnected;
+}
+
+void Euler::Visit(Node* vertex) {
+	vertex->setColor(Node::Color::Gray);
+	
+	for (int nodeNumber : vertex->GetNeighbers()) {
+		if (graph.GetNodesList()[nodeNumber].GetColor() == Node::Color::White) {
+			vertex->MarkEdgeTo(nodeNumber);
+			Visit(&graph.GetNodesList()[nodeNumber]);
+		}
+	}
+	vertex->setColor(Node::Color::Black);
+}
+
+// -----------------------------Get & Set----------------------------------//
+
 void Euler::setShowRuntime(bool isShow) {
 	showRuntime = isShow;
 }

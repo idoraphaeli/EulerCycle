@@ -20,6 +20,10 @@ private:
 
 public:
 	Graph();
+
+	// ----------------Get & Set ------------------- //
 	void GetEdgesFromUser();
+	vector<Node>& GetNodesList() { return nodesList; }
+	int GetNumVertices() { return numVertices; }
 };
 

@@ -58,6 +58,9 @@ void Graph::GetEdgesFromUser() {
 			edge->setTwin(twinEdge);
 			twinEdge->setTwin(edge);
 
+			nodesList[startEdge].AddEdge(edge);
+			nodesList[endEdge].AddEdge(twinEdge);
+
 			edges.push_back(edge);
 			edges.push_back(twinEdge);
 		}

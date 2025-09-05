@@ -1,5 +1,5 @@
 #pragma once
-#include "Node.h"
+class Node;
 
 class Edge
 {
@@ -12,5 +12,11 @@ class Edge
 		Edge(Node* node1, Node* node2);
 		Edge* getTwin() const;
 		void setTwin(Edge* e);
+
+		Node* getStart() const { return Start; }
+		Node* getEnd() const { return End; }
+
+		void mark() { Marked = true; }
+		bool isMarked() const { return Marked; }
 };
 
