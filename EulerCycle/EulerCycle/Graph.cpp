@@ -1,5 +1,27 @@
 #include "Graph.h"
 
+Graph::Graph() {
+	ReadGraphFromUser();
+}
+
+void Graph::ReadGraphFromUser() {
+	int numOfEdges = 0;
+	vector<Node> nodes;
+
+	cout << "Enter number of vertices: ";
+	numVertices = Methods::GetPositiveIntegerFromUser();
+
+	nodes.reserve(numVertices + 1);
+	nodes.emplace_back(0); // dummy
+	for (int i = 1; i < numVertices + 1; i++) {
+		nodes.emplace_back(i);
+	}
+
+	nodesList = nodes;
+	cout << "Please enter the edges of the graph: ";
+	GetEdgesFromUser();
+}
+
 void Graph::GetEdgesFromUser() {
 	vector<Edge*> edges;
 	string input;
@@ -27,11 +49,11 @@ void Graph::GetEdgesFromUser() {
 				throw invalid_argument("Number of vertices must be positive.");
 			}
 
-			nodes[startEdge].AddNeighber(endEdge);
-			nodes[endEdge].AddNeighber(startEdge);
+			nodesList[startEdge].AddNeighber(endEdge);
+			nodesList[endEdge].AddNeighber(startEdge);
 
-			Edge* edge = new Edge(&nodes[startEdge], &nodes[endEdge]);
-			Edge* twinEdge = new Edge(&nodes[endEdge], &nodes[startEdge]);
+			Edge* edge = new Edge(&nodesList[startEdge], &nodesList[endEdge]);
+			Edge* twinEdge = new Edge(&nodesList[endEdge], &nodesList[startEdge]);
 
 			edge->setTwin(twinEdge);
 			twinEdge->setTwin(edge);
@@ -45,5 +67,5 @@ void Graph::GetEdgesFromUser() {
 		cerr << "Error: " << e.what() << endl;
 	}
 
-	ListNeighbers = edges;
+	neighbersList = edges;
 }

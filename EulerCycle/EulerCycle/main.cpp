@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
 #include "Methods.h"
+#include "Euler.h"
 
 using namespace std;
 
 int main() {
-    vector<int> output;
-    output = Methods::FindEulerCycle();
+    Graph g;
+    Euler e = Euler(g);
+    
 }

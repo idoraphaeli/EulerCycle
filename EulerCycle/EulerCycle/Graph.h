@@ -6,18 +6,20 @@
 #include <stdexcept>
 #include "Node.h"
 #include "Edge.h"
+#include "Methods.h"
 using namespace std;
 
 class Graph
 {
 private:
 	int numVertices; // Number of vertices
-	vector<Node> nodes; // List of nodes
-	vector<Edge*> ListNeighbers;
+	vector<Node> nodesList; // List of nodes
+	vector<Edge*> neighbersList;
+
+	void ReadGraphFromUser();
 
 public:
-	Graph(int v, vector<Node> nodes) : numVertices(v), nodes(nodes) {}
-	void setListNeighbersSize(vector<Edge*> edges) { ListNeighbers = edges; }
+	Graph();
 	void GetEdgesFromUser();
 };
 

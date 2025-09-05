@@ -1,48 +1,21 @@
 #include "Methods.h"
 
-Node* Methods::FindCircuit(int i) {
-	Node* cycleHead = nullptr;
+bool Methods::AskShowRuntime() {
+	
+	bool willBeShown = false;
+	cout << "Would you like to see the runtime of the algorithm?";
+	int answer = GetPositiveIntegerFromUser();
 
-	return cycleHead;
-}
-
-void Methods::AddCircuit(Node* cycleHead) {
-
-}
-
-void Methods::AddNode(){
-
-}
-
-vector<int> Methods:: FindEulerCycle() {
-	ReadGraphFromUser();
-
-	return vector<int>();
-}
-
-void Methods::PrintCycle() {
-
-}
-
-Graph Methods::ReadGraphFromUser() {
-	int numOfVertices = 0;
-	int numOfEdges = 0;
-	vector<Node> nodes;
-
-	cout << "Enter number of vertices: ";
-	numOfVertices = Methods::GetPositiveIntegerFromUser();
-	nodes.reserve(numOfVertices+1);
-	nodes.emplace_back(0); // dummy
-	for (int i = 1; i < numOfVertices+1; i++) {
-		nodes.emplace_back(i);
+	try{
+		if (answer != 0 && answer != 1) {
+			throw invalid_argument("Input should be 0 or 1.");
+		}
+	}
+	catch (const exception& e) {
+		cerr << "Error: " << e.what() << endl;
 	}
 
-	Graph graph(numOfVertices, nodes);
-
-	cout << "Please enter the edges of the graph: ";
-	graph.GetEdgesFromUser();
-	
-	return graph;
+	return answer == 0 ? false : true;
 }
 
 int Methods::GetPositiveIntegerFromUser() {
