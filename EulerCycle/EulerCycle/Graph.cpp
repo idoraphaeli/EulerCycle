@@ -22,6 +22,12 @@ void Graph::ReadGraphFromUser() {
 	GetEdgesFromUser();
 }
 
+void Graph::UnmarkAllEdges() {
+	for (Edge* edge : neighbersList) {          // עבור כל צומת בגרף
+		edge->SetMark(false);
+	}
+}
+
 void Graph::GetEdgesFromUser() {
 	vector<Edge*> edges;
 	string input;

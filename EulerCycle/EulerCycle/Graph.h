@@ -20,6 +20,7 @@ private:
 
 public:
 	Graph();
+	void UnmarkAllEdges();
 
 	// ----------------Get & Set ------------------- //
 	void GetEdgesFromUser();

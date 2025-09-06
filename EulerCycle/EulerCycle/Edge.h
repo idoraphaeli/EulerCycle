@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 class Node;
 
 class Edge
@@ -18,5 +20,6 @@ class Edge
 
 		void mark() { Marked = true; }
 		bool isMarked() const { return Marked; }
+		void SetMark(bool mark) { Marked = mark; }
 };
 

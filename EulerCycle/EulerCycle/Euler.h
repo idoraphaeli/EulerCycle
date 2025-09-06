@@ -13,21 +13,25 @@ class Euler
 
 		void AddNode();
 		void AddCircuit(Node* cycleHead);
-		Node* FindCircuit(int i);
+		vector<Node*>& FindCircuitOptimized(int i);
 		bool IsConnected();
 		bool AreAllVerticesEvenDegree();
 		void Visit(Node* vertex);
 
 	public:
 		Euler(Graph graph) : graph(graph) {}
-		void setEulerHead(Node* EulerHead);
-		vector<int> FindEulerCycle();
+		void FindEulerCycle();
 		void PrintCycle();
+		bool IsEulerian();
+		static bool AllVertexsAreMarked(vector<Node*>& L);
+
+		// ---------------Get & Set----------------- //
 		Node* getEulerHead();
 		void setCurrent(Node* Curr);
 		Node* getCurrent();
 		void setShowRuntime(bool isShow);
 		bool getShowRuntime();
-		bool IsEulerian();
+		void setEulerHead(Node* EulerHead);
+		
 };
 

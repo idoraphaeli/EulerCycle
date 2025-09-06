@@ -1,26 +1,95 @@
 #include "Euler.h"
 
 void Euler::AddCircuit(Node* cycleHead) {
+	
+	/*
+	Node* current = EulerHead;
 
-}
+	if (EulerHead == nullptr) {
+		EulerHead = cycleHead;
+		return;
+	}
 
-Node* Euler::FindCircuit(int i) {
-	Node* cycleHead = nullptr;
+	while (current != nullptr && current != cycleHead) {
+		current = current->GetNext();
+	}
 
-	return cycleHead;
+	Node* newCycleHead = FindCircuitOptimized(cycleHead->GetNodeNum());
+
+	Node* after = current->GetNext();
+	Node* tail = newCycleHead;
+
+	while (tail->GetNext() != nullptr && tail != newCycleHead) {
+		tail = tail->GetNext();
+	}
+
+	if (newCycleHead->GetNext() != nullptr) {
+		tail->SetNext(after);
+		current->SetNext(newCycleHead->GetNext());
+	}
+	*/
 }
 
 void Euler::AddNode() {
 
 }
 
-void Euler::PrintCycle() {
+void Euler::FindEulerCycle() {
+	int i = 1;
+	vector<Node*> L;
+	graph.UnmarkAllEdges();
+	L.push_back(&graph.GetNodesList()[1]);
+	vector<Node*> newCycle = FindCircuitOptimized(i);
+	Current = &graph.GetNodesList()[1];
+	
+	while (!AllVertexsAreMarked(L)) {
 
+	}
+	
 }
 
-vector<int> Euler::FindEulerCycle() {
+bool Euler::AllVertexsAreMarked(vector<Node*>& L) {
+	bool AllVertexsAreMarked = true;
 
-	return vector<int>();
+	for (int i = 0; i < L.size(); i++)
+	{
+		if (L[i]->GetCurrentNeighbers() > 0) {
+			AllVertexsAreMarked = false;
+			break;
+		}
+	}
+
+	return AllVertexsAreMarked;
+}
+
+vector<Node*>& Euler::FindCircuitOptimized(int i) {
+
+	Node startNode = graph.GetNodesList()[i];
+	vector<Node*> L;
+	Node* current = &startNode;
+	L.push_back(&startNode);
+
+	while (current->GetCurrentNeighbers() > 0) {
+		int n = current->GetEdges().size();
+		vector<Edge*> edgeList = current->GetEdges();
+
+		for (int i = 0; i < n; i++)
+		{
+			if (!edgeList[i]->isMarked()) {
+				Edge* unmarkedEdge = edgeList[i];
+				Node* Start = unmarkedEdge->getStart();
+				Node* End = unmarkedEdge->getEnd();
+				L.push_back(End);
+				current = End;
+			}
+		}
+	}
+
+	return L;
+}
+
+void Euler::PrintCycle() {
+	
 }
 
 bool Euler::IsEulerian() {
