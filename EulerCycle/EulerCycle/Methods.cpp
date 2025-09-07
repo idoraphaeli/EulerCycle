@@ -8,7 +8,7 @@ bool Methods::AskShowRuntime() {
 
 	try{
 		if (answer != 0 && answer != 1) {
-			throw invalid_argument("Input should be 0 or 1.");
+			throw invalid_argument("invalid input");
 		}
 	}
 	catch (const exception& e) {
@@ -17,6 +17,25 @@ bool Methods::AskShowRuntime() {
 
 	return answer == 0 ? false : true;
 }
+
+int Methods::AskEfficientcy() {
+
+	bool willBeShown = false;
+	cout << "Would you like me to implement the Euler cycle algorithm using version 1 (the efficient approach) or version 2 (the inefficient approach)?";
+	int answer = GetPositiveIntegerFromUser();
+
+	try {
+		if (answer != 2 && answer != 1) {
+			throw invalid_argument("invalid input");
+		}
+	}
+	catch (const exception& e) {
+		cerr << "Error: " << e.what() << endl;
+	}
+
+	return answer;
+}
+
 
 int Methods::GetPositiveIntegerFromUser() {
 	string input;

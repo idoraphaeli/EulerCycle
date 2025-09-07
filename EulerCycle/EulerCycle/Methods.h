@@ -12,5 +12,6 @@ class Methods
 	public:
 		static int GetPositiveIntegerFromUser();
 		static bool AskShowRuntime();
+		static int AskEfficientcy();
 };
 
