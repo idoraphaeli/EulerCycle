@@ -13,7 +13,4 @@ int main() {
         e.FindEulerCycle();
         e.PrintCycle();
     }
-    else {
-        // output not eulerian
-    }
 }

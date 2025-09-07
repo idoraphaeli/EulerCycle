@@ -1,7 +1,7 @@
 #include "Edge.h"
-#include "Node.h"
+#include "Vertex.h"
 
-Edge::Edge(Node* node1, Node* node2){
+Edge::Edge(Vertex* node1, Vertex* node2){
 	Start = node1;
 	End = node2;
 }

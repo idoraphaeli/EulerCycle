@@ -1,95 +1,115 @@
 #include "Euler.h"
 
-void Euler::AddCircuit(Node* cycleHead) {
-	
-	/*
-	Node* current = EulerHead;
+void Euler::AddCircuit(Node* currentL1) {
+
+	int stop = currentL1->GetVertex()->GetVertexNum();
 
 	if (EulerHead == nullptr) {
-		EulerHead = cycleHead;
+		EulerHead = currentL1;
 		return;
 	}
 
-	while (current != nullptr && current != cycleHead) {
-		current = current->GetNext();
+	Node* currentL = EulerHead;
+
+	while (currentL != nullptr && currentL->GetVertex()->GetVertexNum() != stop) {
+		currentL = currentL->GetNext();
 	}
 
-	Node* newCycleHead = FindCircuitOptimized(cycleHead->GetNodeNum());
+	Node* nodeToInsert = currentL1->GetNext();
+	Node* pos = currentL;
 
-	Node* after = current->GetNext();
-	Node* tail = newCycleHead;
-
-	while (tail->GetNext() != nullptr && tail != newCycleHead) {
-		tail = tail->GetNext();
+	while (nodeToInsert != nullptr) {
+		Node* nextInCycle = nodeToInsert->GetNext();
+		AddNode(pos, nodeToInsert);
+		pos = nodeToInsert;
+		nodeToInsert = nextInCycle;
 	}
 
-	if (newCycleHead->GetNext() != nullptr) {
-		tail->SetNext(after);
-		current->SetNext(newCycleHead->GetNext());
-	}
-	*/
 }
 
-void Euler::AddNode() {
+void Euler::AddNode(Node* pos, Node* newNode) {
+	if (pos == nullptr || newNode == nullptr) return;
 
+	Node* after = pos->GetNext();
+	pos->SetNext(newNode);
+	newNode->SetNext(after);
 }
 
 void Euler::FindEulerCycle() {
 	int i = 1;
-	vector<Node*> L;
 	graph.UnmarkAllEdges();
-	L.push_back(&graph.GetNodesList()[1]);
-	vector<Node*> newCycle = FindCircuitOptimized(i);
-	Current = &graph.GetNodesList()[1];
-	
-	while (!AllVertexsAreMarked(L)) {
 
-	}
-	
-}
+	Node* newCycle = nullptr;
+	Current = new Node(&graph.GetVertexsList()[i]);
 
-bool Euler::AllVertexsAreMarked(vector<Node*>& L) {
-	bool AllVertexsAreMarked = true;
+	while (Current != nullptr) {
 
-	for (int i = 0; i < L.size(); i++)
-	{
-		if (L[i]->GetCurrentNeighbers() > 0) {
-			AllVertexsAreMarked = false;
-			break;
-		}
-	}
-
-	return AllVertexsAreMarked;
-}
-
-vector<Node*>& Euler::FindCircuitOptimized(int i) {
-
-	Node startNode = graph.GetNodesList()[i];
-	vector<Node*> L;
-	Node* current = &startNode;
-	L.push_back(&startNode);
-
-	while (current->GetCurrentNeighbers() > 0) {
-		int n = current->GetEdges().size();
-		vector<Edge*> edgeList = current->GetEdges();
-
-		for (int i = 0; i < n; i++)
-		{
-			if (!edgeList[i]->isMarked()) {
-				Edge* unmarkedEdge = edgeList[i];
-				Node* Start = unmarkedEdge->getStart();
-				Node* End = unmarkedEdge->getEnd();
-				L.push_back(End);
-				current = End;
+		bool hasUnmarkedEdge = false;
+		for (Edge* edge : Current->GetVertex()->GetEdges()) {
+			if (!edge->isMarked()) {
+				hasUnmarkedEdge = true;
+				break;
 			}
 		}
+
+		if (hasUnmarkedEdge) {
+			Node* extraCycle = FindCircuit(Current->GetVertex()->GetVertexNum());
+
+			AddCircuit(extraCycle);
+			Current = extraCycle->GetNext();
+			continue;
+		}
+		Current = Current->GetNext();
+	}
+}
+
+Node* Euler::FindCircuit(int i) {
+
+	Vertex* startVertex = &graph.GetVertexsList()[i];
+	Node* res = new Node(startVertex);
+	Node* currentNode = res;
+	Vertex* current = startVertex;
+
+	while (true) {
+		bool moved = false;
+		vector<Edge*> edgeList = current->GetEdges();
+
+		for (Edge* e : edgeList) {
+			if (!e->isMarked()) {
+				e->SetMark(true);
+				e->getTwin()->SetMark(true);
+
+				Vertex* End = e->getEnd();
+
+				current->GetCurrentNeighbers()--;
+				End->GetCurrentNeighbers()--;
+
+				Node* next = new Node(End);
+				currentNode->SetNext(next);
+				currentNode = next;
+
+				current = End;
+				moved = true;
+				break;
+			}
+		}
+
+		if (!moved) {
+			break;
+		}
+
 	}
 
-	return L;
+	return res;
 }
 
 void Euler::PrintCycle() {
-	
+	Node* curr = EulerHead;
+
+	while (curr != nullptr) {
+		cout << curr->GetVertex()->GetVertexNum() << " ";
+		curr = curr->GetNext();
+	}
 }
 
 bool Euler::IsEulerian() {
@@ -99,7 +119,7 @@ bool Euler::IsEulerian() {
 bool Euler::AreAllVerticesEvenDegree() {
 	bool EvenDegree = true;
 
-	for (const Node& node : graph.GetNodesList()) {
+	for (const Vertex& node : graph.GetVertexsList()) {
 		if (node.GetDegree() % 2 != 0) {
 			EvenDegree = false;
 			break;
@@ -111,11 +131,11 @@ bool Euler::AreAllVerticesEvenDegree() {
 
 bool Euler::IsConnected() {
 	bool IsConnected = true;
-	Visit(&graph.GetNodesList()[1]);
+	Visit(&graph.GetVertexsList()[1]);
 
 	for (int i = 1; i < graph.GetNumVertices(); i++)
 	{
-		if (graph.GetNodesList()[i].GetColor() == Node::Color::White) {
+		if (graph.GetVertexsList()[i].GetColor() == Vertex::Color::White) {
 			IsConnected = false;
 			break;
 		}
@@ -124,16 +144,16 @@ bool Euler::IsConnected() {
 	return IsConnected;
 }
 
-void Euler::Visit(Node* vertex) {
-	vertex->setColor(Node::Color::Gray);
+void Euler::Visit(Vertex* vertex) {
+	vertex->setColor(Vertex::Color::Gray);
 	
 	for (int nodeNumber : vertex->GetNeighbers()) {
-		if (graph.GetNodesList()[nodeNumber].GetColor() == Node::Color::White) {
+		if (graph.GetVertexsList()[nodeNumber].GetColor() == Vertex::Color::White) {
 			vertex->MarkEdgeTo(nodeNumber);
-			Visit(&graph.GetNodesList()[nodeNumber]);
+			Visit(&graph.GetVertexsList()[nodeNumber]);
 		}
 	}
-	vertex->setColor(Node::Color::Black);
+	vertex->setColor(Vertex::Color::Black);
 }
 
 // -----------------------------Get & Set----------------------------------//

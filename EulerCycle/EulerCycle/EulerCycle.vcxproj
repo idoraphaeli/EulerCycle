@@ -129,6 +129,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Methods.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Edge.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Methods.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

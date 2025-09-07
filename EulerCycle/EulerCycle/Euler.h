@@ -1,6 +1,7 @@
 #pragma once
-#include "Node.h"
+#include "Vertex.h"
 #include "Graph.h"
+#include "Node.h"
 #include <vector>
 
 class Euler
@@ -11,19 +12,18 @@ class Euler
 		Node* Current = nullptr;
 		bool showRuntime = false;
 
-		void AddNode();
+		void AddNode(Node* pos, Node* newNode);
 		void AddCircuit(Node* cycleHead);
-		vector<Node*>& FindCircuitOptimized(int i);
+		Node* FindCircuit(int i);
 		bool IsConnected();
 		bool AreAllVerticesEvenDegree();
-		void Visit(Node* vertex);
+		void Visit(Vertex* vertex);
 
 	public:
 		Euler(Graph graph) : graph(graph) {}
 		void FindEulerCycle();
 		void PrintCycle();
 		bool IsEulerian();
-		static bool AllVertexsAreMarked(vector<Node*>& L);
 
 		// ---------------Get & Set----------------- //
 		Node* getEulerHead();

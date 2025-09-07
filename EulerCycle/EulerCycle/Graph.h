@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 #include <stdexcept>
-#include "Node.h"
+#include "Vertex.h"
 #include "Edge.h"
 #include "Methods.h"
 using namespace std;
@@ -13,7 +13,7 @@ class Graph
 {
 private:
 	int numVertices; // Number of vertices
-	vector<Node> nodesList; // List of nodes
+	vector<Vertex> nodesList; // List of nodes
 	vector<Edge*> neighbersList;
 
 	void ReadGraphFromUser();
@@ -24,7 +24,7 @@ public:
 
 	// ----------------Get & Set ------------------- //
 	void GetEdgesFromUser();
-	vector<Node>& GetNodesList() { return nodesList; }
+	vector<Vertex>& GetVertexsList() { return nodesList; }
 	int GetNumVertices() { return numVertices; }
 };
 

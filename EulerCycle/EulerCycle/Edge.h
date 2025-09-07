@@ -1,22 +1,22 @@
 #pragma once
 #include <iostream>
 
-class Node;
+class Vertex;
 
 class Edge
 {
 	private:
 		bool Marked = false;
-		Node* Start = nullptr;
-		Node* End = nullptr;
+		Vertex* Start = nullptr;
+		Vertex* End = nullptr;
 		Edge* twin = nullptr;
 	public:
-		Edge(Node* node1, Node* node2);
+		Edge(Vertex* node1, Vertex* node2);
 		Edge* getTwin() const;
 		void setTwin(Edge* e);
 
-		Node* getStart() const { return Start; }
-		Node* getEnd() const { return End; }
+		Vertex* getStart() const { return Start; }
+		Vertex* getEnd() const { return End; }
 
 		void mark() { Marked = true; }
 		bool isMarked() const { return Marked; }

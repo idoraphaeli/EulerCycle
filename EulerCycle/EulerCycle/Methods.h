@@ -3,7 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
-#include "Node.h"
+#include "Vertex.h"
 #include "Graph.h"
 using namespace std;
 

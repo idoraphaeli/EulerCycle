@@ -6,7 +6,7 @@ Graph::Graph() {
 
 void Graph::ReadGraphFromUser() {
 	int numOfEdges = 0;
-	vector<Node> nodes;
+	vector<Vertex> nodes;
 
 	cout << "Enter number of vertices: ";
 	numVertices = Methods::GetPositiveIntegerFromUser();
@@ -23,8 +23,13 @@ void Graph::ReadGraphFromUser() {
 }
 
 void Graph::UnmarkAllEdges() {
-	for (Edge* edge : neighbersList) {          // עבור כל צומת בגרף
-		edge->SetMark(false);
+	for (Edge* edge : neighbersList) {
+		if (edge->isMarked()) {
+			edge->SetMark(false);
+			edge->getTwin()->SetMark(false);
+			edge->getStart()->GetCurrentNeighbers()++;
+			edge->getEnd()->GetCurrentNeighbers()++;
+		}
 	}
 }
 
