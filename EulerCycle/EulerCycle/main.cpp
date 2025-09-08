@@ -18,28 +18,31 @@ int main() {
         switch (Efficient) {
         case 1: {
             auto start = chrono::high_resolution_clock::now();
-            e.FindEulerCycle();
+            e.FindEulerCycleEfficient();
             e.PrintCycle();
             auto end = chrono::high_resolution_clock::now();
             auto duration =
-                std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+                chrono::duration_cast<chrono::microseconds>(end - start);
             if (showRunTime) {
-                std::cout << "\nFunction took " << duration.count() << " microseconds." << std::endl;
+                cout << "\nFunction took " << duration.count() << " microseconds." << endl;
             }
             break;
         }
         case 2: {
             auto start = chrono::high_resolution_clock::now();
-            e.FindEulerCycle();
+            e.FindEulerCycleInefficient();
             e.PrintCycle();
             auto end = chrono::high_resolution_clock::now();
             auto duration =
-                std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+                chrono::duration_cast<chrono::microseconds>(end - start);
             if (showRunTime) {
-                std::cout << "\nFunction took " << duration.count() << " microseconds." << std::endl;
+                cout << "\nFunction took " << duration.count() << " microseconds." << endl;
             }
             break;
         }
         }
+    }
+    else {
+        cout << "Graph is not Eulerian." << endl;
     }
 }

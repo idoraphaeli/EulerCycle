@@ -21,7 +21,10 @@ class Euler
 
 	public:
 		Euler(Graph graph) : graph(graph) {}
-		void FindEulerCycle();
+		//~Euler();
+		void FindEulerCycleEfficient();
+		void FindEulerCycleInefficient();
+		bool HasMoreThanOneVertex();
 		void PrintCycle();
 		bool IsEulerian();
 

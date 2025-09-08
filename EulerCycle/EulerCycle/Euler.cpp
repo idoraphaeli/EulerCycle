@@ -1,5 +1,14 @@
 #include "Euler.h"
 
+/*Euler::~Euler() {
+	Node* curr = EulerHead;
+	while (curr != nullptr) {
+		Node* next = curr->GetNext();
+		delete curr;
+		curr = next;
+	}
+}*/
+
 void Euler::AddCircuit(Node* currentL1) {
 
 	int stop = currentL1->GetVertex()->GetVertexNum();
@@ -35,18 +44,22 @@ void Euler::AddNode(Node* pos, Node* newNode) {
 	newNode->SetNext(after);
 }
 
-void Euler::FindEulerCycle() {
+void Euler::FindEulerCycleEfficient() {
 	int i = 1;
 	graph.UnmarkAllEdges();
 
 	Node* newCycle = nullptr;
 	Current = new Node(&graph.GetVertexsList()[i]);
+	EulerHead = Current;
 
 	while (Current != nullptr) {
 
 		bool hasUnmarkedEdge = false;
-		for (Edge* edge : Current->GetVertex()->GetEdges()) {
-			if (!edge->isMarked()) {
+		while (Current->GetVertex()->GetNextEdgeIndex() < Current->GetVertex()->GetEdges().size()) {
+			Edge* e = Current->GetVertex()->GetEdges()[Current->GetVertex()->GetNextEdgeIndex()];
+			Current->GetVertex()->GetNextEdgeIndex()++;
+
+			if (!e->isMarked()) {
 				hasUnmarkedEdge = true;
 				break;
 			}
@@ -60,6 +73,49 @@ void Euler::FindEulerCycle() {
 			continue;
 		}
 		Current = Current->GetNext();
+	}
+}
+
+void Euler::FindEulerCycleInefficient() {
+	int i = 1;
+	graph.UnmarkAllEdges();
+
+	Node* newCycle = nullptr;
+	Current = new Node(&graph.GetVertexsList()[i]);
+	EulerHead = Current;
+
+	while (Current != nullptr) {
+
+		bool hasUnmarkedEdge = false;
+		for (Edge* edge : Current->GetVertex()->GetEdges()) {
+			bool twinIsMarked = false;
+			Vertex* endVertex = edge->getEnd();
+
+			if (!edge->isMarked()) {
+
+				for (Edge* edge : endVertex->GetEdges()) {
+
+					if (edge->getEnd()->GetVertexNum() == Current->GetVertex()->GetVertexNum()) {
+						if (!edge->isMarked()) {
+							hasUnmarkedEdge = true;
+							break;
+						}
+					}
+				}
+				if (hasUnmarkedEdge) break;
+			}
+		}
+
+		if (hasUnmarkedEdge) {
+			Node* extraCycle = FindCircuit(Current->GetVertex()->GetVertexNum());
+
+			AddCircuit(extraCycle);
+			Current = EulerHead;
+			continue;
+		}
+		else {
+			Current = Current->GetNext();
+		}
 	}
 }
 
@@ -105,11 +161,13 @@ Node* Euler::FindCircuit(int i) {
 
 void Euler::PrintCycle() {
 	Node* curr = EulerHead;
+	cout << "Euler circuit: ";
 
-	while (curr != nullptr) {
-		cout << curr->GetVertex()->GetVertexNum() << " ";
+	while (curr->GetNext() != nullptr) {
+		cout << curr->GetVertex()->GetVertexNum() << ", ";
 		curr = curr->GetNext();
 	}
+	cout << curr->GetVertex()->GetVertexNum();
 }
 
 bool Euler::IsEulerian() {
@@ -133,7 +191,7 @@ bool Euler::IsConnected() {
 	bool IsConnected = true;
 	Visit(&graph.GetVertexsList()[1]);
 
-	for (int i = 1; i < graph.GetNumVertices(); i++)
+	for (int i = 1; i < graph.GetNumVertices()+1; i++)
 	{
 		if (graph.GetVertexsList()[i].GetColor() == Vertex::Color::White) {
 			IsConnected = false;

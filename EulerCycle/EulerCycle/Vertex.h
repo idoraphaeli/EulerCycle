@@ -15,6 +15,7 @@ class Vertex
 		vector<Edge*> Edges = vector<Edge*>();
 		Vertex* nextInCycle = nullptr;
 		int currentNeighbers = 0;
+		int nextEdgeIndex = 0;
 
 	public:
 		Vertex(int Num) { VertexNum = Num; };
@@ -27,11 +28,13 @@ class Vertex
 		Color GetColor() const { return color; }
 		int const GetDegree() const { return Neighbers.size(); }
 		vector<int>& GetNeighbers() { return Neighbers; }
-		vector<Edge*>& const GetEdges() { return Edges; }
+		vector<Edge*>& GetEdges() { return Edges; }
 		int const GetVertexNum() const { return VertexNum; }
 		void SetNext(Vertex* n) { nextInCycle = n; }
 		Vertex* GetNext() const { return nextInCycle; }
 		int& GetCurrentNeighbers() { return currentNeighbers; }
+		int& GetNextEdgeIndex() { return nextEdgeIndex; }
+		void SetNextEdgeIndex(int Index) { nextEdgeIndex = Index; }
 		
 
 };

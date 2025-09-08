@@ -2,13 +2,22 @@
 
 Graph::Graph() {
 	ReadGraphFromUser();
+	SortAllNeighbers();
+	SortAllEdges();
 }
+
+/*Graph::~Graph() {
+	for (Vertex& v : vertexList) {
+		for (Edge* e : v.GetEdges()) {
+			delete e;
+		}
+	}
+}*/
 
 void Graph::ReadGraphFromUser() {
 	int numOfEdges = 0;
 	vector<Vertex> nodes;
 
-	cout << "Enter number of vertices: ";
 	numVertices = Methods::GetPositiveIntegerFromUser();
 
 	nodes.reserve(numVertices + 1);
@@ -17,9 +26,28 @@ void Graph::ReadGraphFromUser() {
 		nodes.emplace_back(i);
 	}
 
-	nodesList = nodes;
-	cout << "Please enter the edges of the graph: ";
+	vertexList = nodes;
 	GetEdgesFromUser();
+}
+
+void Graph::SortAllEdges() {
+	for (Vertex& v : vertexList) {
+		vector<Edge*>& edges = v.GetEdges();
+		sort(edges.begin(), edges.end(),
+			[](Edge* a, Edge* b) {
+				if (a->getStart()->GetVertexNum() != b->getStart()->GetVertexNum()) {
+					return a->getStart()->GetVertexNum() < b->getStart()->GetVertexNum();
+				}
+				return a->getEnd()->GetVertexNum() < b->getEnd()->GetVertexNum();
+			});
+	}
+}
+
+void Graph::SortAllNeighbers() {
+	for (Vertex& v : vertexList) {
+		vector<int>& neigh = v.GetNeighbers();
+		sort(neigh.begin(), neigh.end());
+	}
 }
 
 void Graph::UnmarkAllEdges() {
@@ -33,6 +61,28 @@ void Graph::UnmarkAllEdges() {
 	}
 }
 
+bool Graph::EdgeExists(int u, int v) {
+	bool res = false;
+
+	for (Edge* e : vertexList[u].GetEdges()) {
+		if (e->getEnd()->GetVertexNum() == v) {
+			res = true;
+			break;
+		}
+	}
+
+	if (!res) {
+		for (Edge* e : vertexList[v].GetEdges()) {
+			if (e->getEnd()->GetVertexNum() == u) {
+				res = true;
+				break;
+			}
+		}
+	}
+
+	return res;
+}
+
 void Graph::GetEdgesFromUser() {
 	vector<Edge*> edges;
 	string input;
@@ -44,33 +94,37 @@ void Graph::GetEdgesFromUser() {
 	try {
 
 		if (input.empty()) {
-			throw invalid_argument("No input was provided.");
+			return;
 		}
 
 		for (char c : input) {
 			if (!isdigit(c) && c != ' ') {
-				throw invalid_argument("Input is not a valid number.");
+				throw invalid_argument("Invalid input.");
 			}
 		}
 
 		istringstream iss(input);
 
 		while (iss >> startEdge >> endEdge) {
-			if ((startEdge <= 0) || (endEdge <= 0)) {
-				throw invalid_argument("Number of vertices must be positive.");
+			if ((startEdge <= 0) || (startEdge > numVertices) || (endEdge <= 0) || (endEdge > numVertices)) {
+				throw invalid_argument("Invalid input.");
 			}
 
-			nodesList[startEdge].AddNeighber(endEdge);
-			nodesList[endEdge].AddNeighber(startEdge);
+			if (EdgeExists(startEdge, endEdge)) {
+				throw invalid_argument("Invalid input.");
+			}
 
-			Edge* edge = new Edge(&nodesList[startEdge], &nodesList[endEdge]);
-			Edge* twinEdge = new Edge(&nodesList[endEdge], &nodesList[startEdge]);
+			vertexList[startEdge].AddNeighber(endEdge);
+			vertexList[endEdge].AddNeighber(startEdge);
+
+			Edge* edge = new Edge(&vertexList[startEdge], &vertexList[endEdge]);
+			Edge* twinEdge = new Edge(&vertexList[endEdge], &vertexList[startEdge]);
 
 			edge->setTwin(twinEdge);
 			twinEdge->setTwin(edge);
 
-			nodesList[startEdge].AddEdge(edge);
-			nodesList[endEdge].AddEdge(twinEdge);
+			vertexList[startEdge].AddEdge(edge);
+			vertexList[endEdge].AddEdge(twinEdge);
 
 			edges.push_back(edge);
 			edges.push_back(twinEdge);
@@ -78,7 +132,8 @@ void Graph::GetEdgesFromUser() {
 		
 	}
 	catch (const exception& e) {
-		cerr << "Error: " << e.what() << endl;
+		cerr << e.what() << endl;
+		exit(1);
 	}
 
 	neighbersList = edges;

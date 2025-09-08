@@ -3,16 +3,16 @@
 bool Methods::AskShowRuntime() {
 	
 	bool willBeShown = false;
-	cout << "Would you like to see the runtime of the algorithm?";
 	int answer = GetPositiveIntegerFromUser();
-
+	
 	try{
 		if (answer != 0 && answer != 1) {
-			throw invalid_argument("invalid input");
+			throw invalid_argument("Invalid input.");
 		}
 	}
 	catch (const exception& e) {
-		cerr << "Error: " << e.what() << endl;
+		cerr << e.what() << endl;
+		exit(1);
 	}
 
 	return answer == 0 ? false : true;
@@ -21,16 +21,16 @@ bool Methods::AskShowRuntime() {
 int Methods::AskEfficientcy() {
 
 	bool willBeShown = false;
-	cout << "Would you like me to implement the Euler cycle algorithm using version 1 (the efficient approach) or version 2 (the inefficient approach)?";
 	int answer = GetPositiveIntegerFromUser();
 
 	try {
 		if (answer != 2 && answer != 1) {
-			throw invalid_argument("invalid input");
+			throw invalid_argument("Invalid input.");
 		}
 	}
 	catch (const exception& e) {
-		cerr << "Error: " << e.what() << endl;
+		cerr << e.what() << endl;
+		exit(1);
 	}
 
 	return answer;
@@ -45,22 +45,20 @@ int Methods::GetPositiveIntegerFromUser() {
 	try {
 
 		if (input.empty()) {
-			throw invalid_argument("No input was provided.");
+			throw invalid_argument("Invalid input.");
 		}
 
 		for (char c : input) {
 			if (!isdigit(c)) {
-				throw invalid_argument("Input is not a valid number.");
+				throw invalid_argument("Invalid input.");
 			}
-		}
-
-		number = stoi(input);
-		if (number <= 0) {
-			throw invalid_argument("Number of vertices must be positive.");
 		}
 	}
 	catch (const exception& e) {
-		cerr << "Error: " << e.what() << endl;
+		cerr << e.what() << endl;
+		exit(1);
 	}
+
+	number = stoi(input);
 	return number;
 }
