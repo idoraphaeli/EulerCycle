@@ -6,13 +6,13 @@ Graph::Graph() {
 	SortAllEdges();
 }
 
-/*Graph::~Graph() {
+Graph::~Graph() {
 	for (Vertex& v : vertexList) {
 		for (Edge* e : v.GetEdges()) {
 			delete e;
 		}
 	}
-}*/
+}
 
 void Graph::ReadGraphFromUser() {
 	int numOfEdges = 0;

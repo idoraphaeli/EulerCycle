@@ -1,13 +1,13 @@
 #include "Euler.h"
 
-/*Euler::~Euler() {
+Euler::~Euler() {
 	Node* curr = EulerHead;
 	while (curr != nullptr) {
 		Node* next = curr->GetNext();
 		delete curr;
 		curr = next;
 	}
-}*/
+}
 
 void Euler::AddCircuit(Node* currentL1) {
 

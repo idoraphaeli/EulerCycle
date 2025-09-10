@@ -24,7 +24,7 @@ private:
 
 public:
 	Graph();
-	//~Graph();
+	~Graph();
 	void UnmarkAllEdges();
 
 	// ----------------Get & Set ------------------- //

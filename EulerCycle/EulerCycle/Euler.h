@@ -7,7 +7,7 @@
 class Euler
 {
 	private:
-		Graph graph;
+		Graph& graph;
 		Node* EulerHead = nullptr;
 		Node* Current = nullptr;
 		bool showRuntime = false;
@@ -20,11 +20,10 @@ class Euler
 		void Visit(Vertex* vertex);
 
 	public:
-		Euler(Graph graph) : graph(graph) {}
-		//~Euler();
+		Euler(Graph& graph) : graph(graph) {}
+		~Euler();
 		void FindEulerCycleEfficient();
 		void FindEulerCycleInefficient();
-		bool HasMoreThanOneVertex();
 		void PrintCycle();
 		bool IsEulerian();
 
